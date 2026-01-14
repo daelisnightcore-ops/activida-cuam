@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aroma & Grano | Cafetería de Especialidad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+            --coffee-dark: #2c1810;
+            --coffee-medium: #634832;
+            --coffee-light: #967259;
+            --cream: #f4ebd0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #faf7f2;
+        }
+
+        h1, h2, h3, .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=1920');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #e63946;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Navegación -->
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl font-bold text-[#2c1810] font-serif">Aroma & Grano</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#inicio" class="hover:text-[#967259] px-3 py-2 font-medium">Inicio</a>
+                        <a href="#menu" class="hover:text-[#967259] px-3 py-2 font-medium">Menú</a>
+                        <a href="#reservas" class="hover:text-[#967259] px-3 py-2 font-medium">Reservas</a>
+                        <a href="#contacto" class="hover:text-[#967259] px-3 py-2 font-medium">Contacto</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="toggleCart()" class="relative p-2 text-gray-600 hover:text-[#967259]">
+                        <i class="fas fa-shopping-basket text-xl"></i>
+                        <span id="cart-count" class="cart-badge">0</span>
+                    </button>
+                    <button class="md:hidden p-2">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero-gradient h-screen flex items-center justify-center text-center text-white pt-20">
+        <div class="max-w-3xl px-4">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 italic">El arte de un buen café</h1>
+            <p class="text-xl mb-8 font-light tracking-wide">Descubre granos seleccionados y tostados artesanalmente en el corazón de la ciudad.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#menu" class="bg-[#967259] hover:bg-[#634832] text-white px-8 py-3 rounded-full font-semibold transition duration-300">Ver Carta</a>
+                <a href="#reservas" class="bg-white hover:bg-gray-100 text-[#2c1810] px-8 py-3 rounded-full font-semibold transition duration-300">Reservar Mesa</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menú Interactivo -->
+    <section id="menu" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-[#2c1810] mb-4">Nuestro Menú</h2>
+            <div class="w-24 h-1 bg-[#967259] mx-auto mb-8"></div>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button onclick="filterMenu('todos')" class="filter-btn active bg-[#2c1810] text-white px-6 py-2 rounded-full border border-[#2c1810]">Todos</button>
+                <button onclick="filterMenu('cafe')" class="filter-btn border border-gray-300 px-6 py-2 rounded-full hover:bg-gray-100">Cafés</button>
+                <button onclick="filterMenu('reposteria')" class="filter-btn border border-gray-300 px-6 py-2 rounded-full hover:bg-gray-100">Repostería</button>
+                <button onclick="filterMenu('salado')" class="filter-btn border border-gray-300 px-6 py-2 rounded-full hover:bg-gray-100">Salados</button>
+            </div>
+        </div>
+
+        <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Los items se cargan por JS -->
+        </div>
+    </section>
+
+    <!-- Reservas -->
+    <section id="reservas" class="py-20 bg-[#2c1810] text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold mb-6 font-serif">Reserva tu rincón</h2>
+                    <p class="text-gray-300 mb-8">¿Planeas una reunión o solo quieres asegurar tu lugar favorito? Completa el formulario y nosotros nos encargamos del resto.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-check text-[#967259]"></i>
+                            <span>Ambiente climatizado y WiFi de alta velocidad.</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-check text-[#967259]"></i>
+                            <span>Áreas privadas para reuniones.</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-check text-[#967259]"></i>
+                            <span>Opciones veganas y sin gluten disponibles.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white p-8 rounded-2xl text-gray-800 shadow-xl">
+                    <form id="booking-form" onsubmit="handleBooking(event)">
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Fecha</label>
+                                <input type="date" required class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#967259]">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Hora</label>
+                                <input type="time" required class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#967259]">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-semibold mb-2">Personas</label>
+                            <select class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#967259]">
+                                <option>1 Persona</option>
+                                <option>2 Personas</option>
+                                <option>4 Personas</option>
+                                <option>Más de 4</option>
+                            </select>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-sm font-semibold mb-2">Nombre Completo</label>
+                            <input type="text" placeholder="Tu nombre" required class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#967259]">
+                        </div>
+                        <button type="submit" class="w-full bg-[#967259] text-white py-3 rounded-lg font-bold hover:bg-[#634832] transition duration-300">Confirmar Reserva</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto" class="bg-gray-100 py-12 border-t">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h3 class="text-2xl font-bold font-serif mb-4">Aroma & Grano</h3>
+            <p class="text-gray-600 mb-6">Calle Falsa 123, Ciudad del Café. Abierto todos los días de 8:00 a 20:00.</p>
+            <div class="flex justify-center gap-6 mb-8 text-2xl">
+                <a href="#" class="text-[#2c1810] hover:text-[#967259]"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-[#2c1810] hover:text-[#967259]"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="text-[#2c1810] hover:text-[#967259]"><i class="fab fa-twitter"></i></a>
+            </div>
+            <p class="text-sm text-gray-500">© 2024 Aroma & Grano. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Carrito (Modal Lateral) -->
+    <div id="cart-modal" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/50" onclick="toggleCart()"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl p-8 transform transition-transform duration-300">
+            <div class="flex justify-between items-center mb-8 border-bottom pb-4">
+                <h3 class="text-2xl font-bold font-serif">Tu Pedido</h3>
+                <button onclick="toggleCart()" class="text-2xl">&times;</button>
+            </div>
+            <div id="cart-items" class="space-y-4 mb-8 max-h-[60vh] overflow-y-auto">
+                <!-- Items del carrito -->
+                <p class="text-gray-500 text-center italic">El carrito está vacío</p>
+            </div>
+            <div class="border-t pt-4">
+                <div class="flex justify-between text-xl font-bold mb-6">
+                    <span>Total:</span>
+                    <span id="cart-total">$0.00</span>
+                </div>
+                <button onclick="checkout()" class="w-full bg-[#2c1810] text-white py-4 rounded-xl font-bold hover:bg-black transition">Realizar Pedido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensaje de Notificación -->
+    <div id="notification" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-8 py-4 rounded-full shadow-lg z-[100] hidden">
+        ¡Agregado al carrito correctamente!
+    </div>
+
+    <script>
+        const menuData = [
+            { id: 1, name: 'Cappuccino Clásico', category: 'cafe', price: 3.50, img: 'https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&q=80&w=400', desc: 'Espresso con leche cremosa y espuma.' },
+            { id: 2, name: 'Tarta de Arándanos', category: 'reposteria', price: 4.25, img: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&q=80&w=400', desc: 'Receta casera con frutos del bosque frescos.' },
+            { id: 3, name: 'Avocado Toast', category: 'salado', price: 7.50, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&q=80&w=400', desc: 'Pan de masa madre, aguacate y semillas.' },
+            { id: 4, name: 'Flat White', category: 'cafe', price: 3.75, img: 'https://images.unsplash.com/photo-1459755486867-b55449bb39ff?auto=format&fit=crop&q=80&w=400', desc: 'Doble shot de espresso con leche sedosa.' },
+            { id: 5, name: 'Croissant Almendras', category: 'reposteria', price: 3.20, img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=400', desc: 'Hojaldre mantequilloso con crema de almendra.' },
+            { id: 6, name: 'Bagel de Salmón', category: 'salado', price: 8.90, img: 'https://images.unsplash.com/photo-1510629954389-c1e0da47d415?auto=format&fit=crop&q=80&w=400', desc: 'Queso crema, salmón ahumado y eneldo.' }
+        ];
+
+        let cart = [];
+
+        function renderMenu(items) {
+            const grid = document.getElementById('menu-grid');
+            grid.innerHTML = items.map(item => `
+                <div class="bg-white rounded-2xl overflow-hidden shadow-md card-hover group">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute top-4 right-4 bg-white/90 px-3 py-1 rounded-full text-sm font-bold shadow">
+                            $${item.price.toFixed(2)}
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">${item.name}</h3>
+                        <p class="text-gray-600 text-sm mb-4">${item.desc}</p>
+                        <button onclick="addToCart(${item.id})" class="w-full border-2 border-[#967259] text-[#967259] py-2 rounded-lg font-bold hover:bg-[#967259] hover:text-white transition">
+                            Añadir al Pedido
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterMenu(category) {
+            // Estética de botones
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-[#2c1810]', 'text-white');
+                btn.classList.add('border-gray-300');
+            });
+            event.target.classList.add('bg-[#2c1810]', 'text-white');
+            
+            const filtered = category === 'todos' ? menuData : menuData.filter(i => i.category === category);
+            renderMenu(filtered);
+        }
+
+        function addToCart(id) {
+            const item = menuData.find(i => i.id === id);
+            cart.push(item);
+            updateCartUI();
+            showNotification(`¡${item.name} añadido!`);
+        }
+
+        function updateCartUI() {
+            const count = document.getElementById('cart-count');
+            const itemsContainer = document.getElementById('cart-items');
+            const totalContainer = document.getElementById('cart-total');
+
+            count.innerText = cart.length;
+
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = '<p class="text-gray-500 text-center italic">El carrito está vacío</p>';
+                totalContainer.innerText = '$0.00';
+                return;
+            }
+
+            itemsContainer.innerHTML = cart.map((item, index) => `
+                <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
+                    <div>
+                        <p class="font-bold">${item.name}</p>
+                        <p class="text-sm text-gray-500">$${item.price.toFixed(2)}</p>
+                    </div>
+                    <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((acc, item) => acc + item.price, 0);
+            totalContainer.innerText = `$${total.toFixed(2)}`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function showNotification(text) {
+            const note = document.getElementById('notification');
+            note.innerText = text;
+            note.classList.remove('hidden');
+            setTimeout(() => note.classList.add('hidden'), 2000);
+        }
+
+        function handleBooking(e) {
+            e.preventDefault();
+            alert('¡Gracias! Tu solicitud de reserva ha sido enviada. Te contactaremos pronto.');
+            e.target.reset();
+        }
+
+        function checkout() {
+            if (cart.length === 0) return alert('El carrito está vacío');
+            alert('¡Pedido recibido! Empezaremos a prepararlo de inmediato.');
+            cart = [];
+            updateCartUI();
+            toggleCart();
+        }
+
+        // Inicializar
